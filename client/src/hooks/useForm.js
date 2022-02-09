@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import validate from '../utils/validator'
-import {useRequest} from './useRequest'
 
 export default function useForm(callback, inputValidationRules = {}) {
   const [values, setValues] = useState({})

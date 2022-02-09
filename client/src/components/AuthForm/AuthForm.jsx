@@ -4,7 +4,7 @@ import InputText from '../UI/Input/Input'
 import {useRequest} from '../../hooks/useRequest'
 
 export default function AuthForm() {
-  const {request, loading} = useRequest()
+  const {request, loading, requestError} = useRequest()
 
   const {
     handleChange,
@@ -21,7 +21,6 @@ export default function AuthForm() {
       (async () => {
         try {
           const data = await request('/api/auth/login', 'GET')
-          console.log(data)
         } catch (e) {
         }
       })()
@@ -30,7 +29,6 @@ export default function AuthForm() {
       (async () => {
         try {
           const data = await request('/api/auth/register', 'POST', {...values})
-          console.log(data)
         } catch (e) {
           console.log(e)
         }
@@ -50,6 +48,7 @@ export default function AuthForm() {
           className="auth-form"
           onSubmit={handleSubmit}
         >
+          {requestError && <div>{requestError}</div>}
           <InputText
             key="auth-form__email"
             name="email"

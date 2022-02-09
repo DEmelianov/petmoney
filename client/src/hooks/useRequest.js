@@ -2,8 +2,10 @@ import {useState} from 'react'
 
 export const useRequest = () => {
   const [loading, setLoading] = useState(false)
+  const [requestError, setRequestError] = useState(null)
 
   const request = async (url, method = 'GET', body = null, headers = {}) => {
+    setRequestError(null)
     setLoading(true)
 
     try {
@@ -16,7 +18,7 @@ export const useRequest = () => {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error (data.message() || 'Something wrong')
+        throw new Error(data.message || 'Something wrong')
       }
 
       setLoading(false)
@@ -24,9 +26,10 @@ export const useRequest = () => {
       return data
     } catch (e) {
       setLoading(false)
+      setRequestError(e.message)
       throw e
     }
   }
 
-  return {loading, request}
+  return {loading, request, requestError}
 }
