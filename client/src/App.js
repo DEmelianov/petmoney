@@ -1,15 +1,24 @@
-import react from 'react'
-import {Container, CssBaseline} from "@mui/material";
+import React from 'react'
+import {BrowserRouter as Router} from 'react-router-dom'
+import {useRoutes} from './routes'
+import Header from './components/Layout/Header/Header'
+import Main from './components/Layout/Main/Main'
+import Footer from './components/Layout/Footer/Footer'
 
 function App() {
+  const routes = useRoutes(true)
+
   return (
-    <>
-      <CssBaseline/>
-      <Container>
-        <div>111</div>
-      </Container>
-    </>
-  );
+    <Router>
+      <Header/>
+      <Main>
+        {routes}
+      </Main>
+      <Footer>
+        Footer
+      </Footer>
+    </Router>
+  )
 }
 
 export default App

@@ -1,0 +1,14 @@
+// colors
+$blue-1: #1890ff;
+$gray-1: #8f8f8f;
+
+//mixins
+@mixin transition($property: all, $duration: .3s, $function: ease) {
+  transition: $property $duration $function;
+}
+
+/*@mixin hover {
+  &:hover {
+    @include transition;
+  }
+}*/
