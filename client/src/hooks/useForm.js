@@ -1,66 +1,72 @@
-import React, {useEffect, useState} from 'react'
-import validate from '../utils/validator'
+import {useState} from 'react'
+import {validate} from '../utils/validator'
 
-export default function useForm(callback, inputValidationRules = {}) {
-  const [values, setValues] = useState({})
-  const [errors, setErrors] = useState({})
+export default function useForm(inputInitialValues = {}, validateRules = [], onSubmitHandler) {
+  const initialErrors = validate(validateRules, inputInitialValues)
+  const [values, setValues] = useState(inputInitialValues)
+  const [errors, setErrors] = useState(initialErrors)
+  const [formError, setFormError] = useState(null)
+  const [touched, setTouched] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isTouched, setIsTouched] = useState({})
-  const [requestAction, setRequestAction] = useState('')
 
-  useEffect(() => {
-    if (Object.keys(errors).length === 0 && isSubmitting) {
-      callback()
-    }
-    setIsSubmitting(false)
-  }, [isSubmitting])
+  console.log('useForm')
 
-  const handleChange = event => {
-    setValues(values => ({...values, [event.target.name]: event.target.value}))
-    validateInput(event.target.name, event.target.value)
+  const changeHandler = event => {
+    const newValues = {...values, [event.target.name]: event.target.value}
+    setValues(newValues)
+
+    const newErrors = validate(validateRules, newValues)
+    setErrors(newErrors)
   }
 
-  const validateInput = (name, value) => {
-    if (inputValidationRules[name]) {
-      const error = validate(name, value, inputValidationRules[name])
-      let newErrors
-      if (error.length === 0) {
-        if (errors[name]) {
-          delete errors[name]
-        }
-        newErrors = errors
-      } else {
-        newErrors = errors => ({...errors, [name]: error})
+  const blurHandler = event => {
+    setTouched(touched => {
+      if (!touched[event.target.name] || touched[event.target.name] !== true) {
+        const newErrors = validate(validateRules, values)
+        setErrors(newErrors)
+
+        return {...touched, [event.target.name]: true}
       }
-
-      return setErrors(newErrors)
-    }
+      return touched
+    })
   }
 
-  const handleBlur = event => {
-    setIsTouched(isTouched => ({...isTouched, [event.target.name]: true}))
-  }
-
-  const handleSubmit = event => {
+  const submitHandler = async event => {
     event.preventDefault()
 
-    for (let input in inputValidationRules) {
-      validateInput(input, values[input])
-      setIsTouched(isTouched => ({...isTouched, [input]: true}))
-    }
+    if (!Object.keys(errors).length) {
+      setIsSubmitting(true)
+      try {
+        await onSubmitHandler(values)
+      } catch (e) {
+        // TODO: replace to logic setServerErrors
+        if (e.errors && e.errors.length > 0) {
+          const newErrors = e.errors.map(error => {
+            if (Object.keys(inputInitialValues).includes(error.param)) {
+              return {[error.param]: error.msg}
+            }
+            return false
+          }).reduce((newErrors, error) => ({...newErrors, ...error}), {})
 
-    setIsSubmitting(true)
+          setErrors(errors => ({...errors, ...newErrors}))
+        }
+
+        if (e.message) {
+          setFormError(e.message)
+        }
+      }
+      setIsSubmitting(false)
+    }
   }
 
   return {
     values,
     errors,
-    handleBlur,
-    handleSubmit,
-    handleChange,
+    formError,
+    touched,
     isSubmitting,
-    isTouched,
-    requestAction,
-    setRequestAction
+    changeHandler,
+    blurHandler,
+    submitHandler,
   }
 }

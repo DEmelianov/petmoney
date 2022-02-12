@@ -7,5 +7,6 @@
 
   &-text {
     color: blue;
+    margin-right: nth((10px, 20px, 30px), 2);
   }
 }

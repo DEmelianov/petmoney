@@ -1,87 +1,78 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import useForm from '../../hooks/useForm'
 import InputText from '../UI/Input/Input'
-import {useRequest} from '../../hooks/useRequest'
+import {isEmail, isRequired} from '../../utils/validator'
+import {registerUser} from '../../api/api'
 
 export default function AuthForm() {
-  const {request, loading, requestError} = useRequest()
+
+  const validateRules = [
+    ({email}) => isRequired(email) || {email: 'E-mail is required'},
+    ({email}) => isEmail(email) || {email: 'Enter correct e-mail'},
+    ({password}) => isRequired(password) || {password: 'Password is required'},
+    // ({password, repeatPassword}) => isSame(password, repeatPassword) || {repeatPassword: 'Passwords do not match'},
+  ]
+
+  const inputInitialValues = {
+    email: '',
+    password: ''
+  }
+
+  const registrationHandler = async () => {
+    await registerUser(values)
+  }
 
   const {
-    handleChange,
-    handleSubmit,
-    handleBlur,
-    errors,
-    isTouched,
-    isSubmitting,
     values,
-    requestAction,
-    setRequestAction
-  } = useForm(() => {
-    if (requestAction === 'auth') {
-      (async () => {
-        try {
-          const data = await request('/api/auth/login', 'GET')
-        } catch (e) {
-        }
-      })()
-    }
-    if (requestAction === 'reg') {
-      (async () => {
-        try {
-          const data = await request('/api/auth/register', 'POST', {...values})
-        } catch (e) {
-          console.log(e)
-        }
-      })()
-    }
-  }, {
-    email: ['required', 'email'],
-    password: ['password'],
-  })
+    touched,
+    errors,
+    isSubmitting,
+    formError,
+    submitHandler,
+    blurHandler,
+    changeHandler
+  } = useForm(inputInitialValues, validateRules, registrationHandler)
 
   return (
     <>
       {isSubmitting
-        ? <div>Loading...</div>
-        :
-        <form
+        ? <div>loading...</div>
+        : <form
           className="auth-form"
-          onSubmit={handleSubmit}
+          onSubmit={submitHandler}
         >
-          {requestError && <div>{requestError}</div>}
+          {formError && <div>{formError}</div>}
           <InputText
-            key="auth-form__email"
+            type="text"
             name="email"
+            value={values.email}
             id="auth-form__email"
-            type="text"
+            inputClassName="auth-form__input auth-form__input_email"
+            labelClassName="auth-form__label auth-form__label_email"
             label="E-mail"
-            value={values.email || ''}
-            onBlur={handleBlur}
-            onChange={handleChange}
+            placeholder="E-mail"
+            error={errors.email}
+            onChange={changeHandler}
+            onBlur={blurHandler}
           />
-          {(errors.email && errors.email.length > 0 && isTouched.email) && errors.email.map((error, index) =>
-            (
-              <p key={'email' + index}>{error}</p>
-            )
-          )}
 
           <InputText
-            key="auth-form__password"
+            type="password"
             name="password"
+            value={values.password}
             id="auth-form__password"
-            type="text"
-            label="password"
-            value={values.password || ''}
-            onBlur={handleBlur}
-            onChange={handleChange}
+            inputClassName="auth-form__input auth-form__input_password"
+            labelClassName="auth-form__label auth-form__label_password"
+            label="Password"
+            placeholder="Password"
+            error={errors.password}
+            onChange={changeHandler}
+            onBlur={blurHandler}
           />
-          {(errors.password && errors.password.length > 0 && isTouched.password) && errors.password.map((error, index) => (
-            <p key={'test' + index}>{error}</p>))}
+          {errors.password && touched.password && <p key="password">{errors.password}</p>}
 
-          <button type="submit" onClick={() => setRequestAction('auth')}>auth</button>
-          <button type="submit" onClick={() => setRequestAction('reg')}>reg</button>
-        </form>
-      }
+          <button type="submit">register</button>
+        </form>}
     </>
   )
 }

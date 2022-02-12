@@ -18,15 +18,15 @@ export const useRequest = () => {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || 'Something wrong')
+        setRequestError(() => ({...data}))
+        throw {...data}
       }
 
       setLoading(false)
-
       return data
     } catch (e) {
       setLoading(false)
-      setRequestError(e.message)
+      console.log('e in request', e)
       throw e
     }
   }
