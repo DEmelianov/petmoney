@@ -1,0 +1,70 @@
+@import '../../../scss/vars.scss';
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.justify {
+  $justify: (
+          start: flex-start,
+          center: center,
+          end: flex-end,
+          between: space-between,
+          around: space-around
+  );
+
+  @each $class, $value in $justify {
+    &_#{$class} {
+      justify-content: $value;
+    }
+  }
+}
+
+.align {
+  $align: (
+          start: flex-start,
+          center: center,
+          end: flex-end,
+  );
+
+  @each $class, $value in $align {
+    &_#{$class} {
+      align-items: $value;
+    }
+  }
+}
+
+.row-gap {
+  $rowGap: (
+          1x: $baseGap,
+          2x: $baseGap * 2,
+          3x: $baseGap * 3,
+  );
+
+  @each $class, $value in $rowGap {
+    &_#{$class} {
+      row-gap: $value;
+    }
+  }
+}
+
+.col-gap {
+  $colGap: (
+          1x: $baseGap / 2,
+          2x: $baseGap / 2 * 2,
+          3x: $baseGap / 2 * 3,
+  );
+
+  @each $class, $value in $colGap {
+    &_#{$class} {
+      margin-left: -$value;
+      margin-right: -$value;
+
+      .col {
+        padding-left: $value;
+        padding-right: $value;
+      }
+    }
+  }
+}

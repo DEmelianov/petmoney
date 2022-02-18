@@ -1,0 +1,74 @@
+@import './src/scss/vars';
+
+.input-control {
+  position: relative;
+}
+
+.label {
+  position: absolute;
+  top: 7px;
+  left: 10px;
+  background: #fff;
+  padding: 3px 5px;
+  transform-origin: left center;
+  cursor: text;
+  @include transition();
+
+  &.active {
+    transform: translateY(-20px) scale(0.75);
+  }
+}
+
+.input {
+  outline: none !important;
+  color: inherit;
+  padding: 12px 10px 5px;
+  border-radius: 2px;
+  margin-bottom: 3px;
+  min-width: 220px;
+  width: 100%;
+  @include border($gray-6);
+  @include transition();
+
+  &::placeholder {
+    color: inherit;
+    display: none;
+  }
+
+  &:focus {
+    border-color: $blue-6;
+  }
+}
+
+.invalid {
+  border-color: $red-4;
+}
+
+.error {
+  color: $red-4;
+  padding-left: 10px;
+  @include transition(all, .3s, linear);
+  overflow: hidden;
+  max-height: 50px;
+  font-size: 12px;
+
+  &-enter {
+    opacity: 0;
+    max-height: 0;
+  }
+
+  &-enter-active {
+    opacity: 1;
+    max-height: 50px;
+  }
+
+  &-exit {
+    opacity: 1;
+    max-height: 50px;
+  }
+
+  &-exit-active {
+    opacity: 0;
+    max-height: 0;
+  }
+}

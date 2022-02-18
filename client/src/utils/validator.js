@@ -15,11 +15,21 @@ export function isEmail(value) {
   return true
 }
 
+export function minLength (length, value) {
+  return value.length >= length
+}
+
+export function maxLength (length, value) {
+  return value.length <= length
+}
+
 export function validate(validateRules, values) {
-  const errors = validateRules
-    .map(validation => validation(values))
-    .filter(validation => typeof validation === 'object')
-  return errors.reduce((errors, error) => ({...errors, ...error}), {})
+  if (validateRules.length > 0) {
+    const errors = validateRules
+      .map(validation => validation(values))
+      .filter(validation => typeof validation === 'object')
+    return errors.reduce((errors, error) => ({...errors, ...error}), {})
+  }
 }
 
 // export default function validate(name, values, rules = []) {

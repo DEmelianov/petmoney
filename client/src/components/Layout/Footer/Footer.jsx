@@ -1,11 +1,12 @@
 import React from 'react'
 import Container from '../Container/Container'
+import styles from './Footer.module.scss'
 
-export default function Footer(props) {
+export default function Footer({children}) {
   return (
-    <footer>
+    <footer className={styles.footer}>
       <Container>
-        {props.children}
+        {children}
       </Container>
     </footer>
   )

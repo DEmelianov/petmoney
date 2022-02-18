@@ -1,0 +1,15 @@
+.col {
+  flex: 0 0 100%;
+  max-width: 100%;
+
+  @for $i from 1 through 11 {
+    &-#{$i} {
+      flex-basis: 100% / 12 * $i;
+      max-width: 100% / 12 * $i;
+    }
+  }
+}
+
+.col-gap_2x .col {
+  padding: 20px;
+}

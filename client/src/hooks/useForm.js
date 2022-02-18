@@ -6,10 +6,7 @@ export default function useForm(inputInitialValues = {}, validateRules = [], onS
   const [values, setValues] = useState(inputInitialValues)
   const [errors, setErrors] = useState(initialErrors)
   const [formError, setFormError] = useState(null)
-  const [touched, setTouched] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  console.log('useForm')
 
   const changeHandler = event => {
     const newValues = {...values, [event.target.name]: event.target.value}
@@ -19,23 +16,12 @@ export default function useForm(inputInitialValues = {}, validateRules = [], onS
     setErrors(newErrors)
   }
 
-  const blurHandler = event => {
-    setTouched(touched => {
-      if (!touched[event.target.name] || touched[event.target.name] !== true) {
-        const newErrors = validate(validateRules, values)
-        setErrors(newErrors)
-
-        return {...touched, [event.target.name]: true}
-      }
-      return touched
-    })
-  }
-
   const submitHandler = async event => {
     event.preventDefault()
 
     if (!Object.keys(errors).length) {
       setIsSubmitting(true)
+      setFormError(null)
       try {
         await onSubmitHandler(values)
       } catch (e) {
@@ -63,10 +49,8 @@ export default function useForm(inputInitialValues = {}, validateRules = [], onS
     values,
     errors,
     formError,
-    touched,
     isSubmitting,
     changeHandler,
-    blurHandler,
     submitHandler,
   }
 }

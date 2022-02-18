@@ -1,10 +1,24 @@
+// layout
+$baseGap: 16px;
+
 // colors
-$blue-1: #1890ff;
-$gray-1: #8f8f8f;
+$blue-6: #1890ff;
+
+$gray-6: #bfbfbf;
+$gray-7: #8c8c8c;
+
+$white: #fff;
+
+$red-4: #ff7875;
 
 //mixins
 @mixin transition($property: all, $duration: .3s, $function: ease) {
   transition: $property $duration $function;
+}
+
+@mixin border($color: $blue-6, $radius: 2px) {
+  border: 1px solid $color;
+  border-radius: $radius;
 }
 
 /*@mixin hover {

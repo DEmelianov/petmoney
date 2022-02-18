@@ -3,7 +3,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import Accounts from "./pages/Accounts";
 import Categories from "./pages/Categories";
 import Transactions from "./pages/Transactions";
-import Auth from "./pages/Auth";
+import Auth from "./pages/Auth/Auth";
 import Profile from "./pages/Profile";
 import Page404 from "./pages/Page404";
 

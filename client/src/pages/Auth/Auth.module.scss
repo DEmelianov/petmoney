@@ -1,0 +1,136 @@
+@import "../../scss/vars";
+
+.form-switcher {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  &-item {
+    font-size: 16px;
+    position: relative;
+    padding: 0 5px;
+    @include transition();
+
+    &:not(.active):hover {
+      color: $blue-6;
+      cursor: pointer;
+
+      .arrow {
+        height: 2px;
+        width: 14px;
+        transition: height .15s ease, width .15s ease .15s;
+        background: $blue-6;
+
+        &-left {
+          &:before {
+            opacity: 1;
+            transition: opacity 0s ease .3s, transform .15s ease .3s;
+            transform: translateY(-50%) rotate(45deg);
+
+          }
+
+          &:after {
+            opacity: 1;
+            transition: opacity 0s ease .3s, transform .15s ease .45s;
+            transform: translateY(-50%) rotate(-45deg);
+          }
+        }
+
+        &-right {
+          &:before {
+            opacity: 1;
+            transition: opacity 0s ease .3s, transform .15s ease .3s;
+            transform: translateY(-50%) rotate(45deg);
+
+          }
+
+          &:after {
+            opacity: 1;
+            transition: opacity 0s ease .3s, transform .15s ease .45s;
+            transform: translateY(-50%) rotate(-45deg);
+          }
+        }
+      }
+    }
+
+    &.active {
+      color: $blue-6;
+      cursor: default;
+
+      .arrow {
+        background: $blue-6;
+      }
+    }
+
+    .auth {
+
+    }
+
+    .reg {
+
+    }
+  }
+}
+
+.arrow {
+  position: absolute;
+  height: 24px;
+  width: 2px;
+  background: $gray-7;
+
+  transition: width .15s ease .3s, height .15s ease .45s;
+  top: 50%;
+  transform: translateY(-50%);
+
+  &:before,
+  &:after {
+    content: '';
+    width: 8px;
+    height: 2px;
+    position: absolute;
+    background: inherit;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+
+  &:before {
+    transition: transform .15s ease, opacity 0s ease .15s;
+    transform-origin: right 3px;
+  }
+
+  &:after {
+    transition: transform .15s ease .15s, opacity 0s ease .3s;
+    transform-origin: right -1px;
+  }
+
+  &-left {
+    right: 100%;
+
+    &:before {
+      left: 0;
+      transform-origin: left -1px;
+    }
+
+    &:after {
+      left: 0;
+      transform-origin: left 3px;
+    }
+  }
+
+  &-right {
+    left: 100%;
+
+    &:before {
+      right: 0;
+      transition: transform .15s ease, opacity 0s ease .15s;
+      transform-origin: right 3px;
+    }
+
+    &:after {
+      right: 0;
+      transition: transform .15s ease .15s, opacity 0s ease .3s;
+      transform-origin: right -1px;
+    }
+  }
+}

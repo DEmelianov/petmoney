@@ -1,6 +1,9 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 import styles from './TopNav.module.scss'
+import classNames from 'classnames/bind'
+
+const cn = classNames.bind(styles)
 
 export default function TopNav() {
   const menuLinks = [
@@ -12,15 +15,13 @@ export default function TopNav() {
   ]
 
   return (
-    <nav className={styles.topNav}>
+    <nav className={cn('topNav')}>
       {menuLinks.map(link =>
         (
           <NavLink
             to={link.link}
             key={link.link}
-            className={({ isActive }) =>
-              isActive ? `${styles.item} ${styles.active}` : styles.item
-            }
+            className={({isActive}) => cn('item', {'active': isActive})}
           >
             {link.label}
           </NavLink>

@@ -7,11 +7,19 @@
 .item {
   padding: 10px 20px;
   text-decoration: none;
-  color: $gray-1;
+  color: $gray-7;
   @include transition();
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:last-child {
+    padding-right: 0;
+  }
 
   &.active,
   &:hover {
-    color: $blue-1;
+    color: $blue-6;
   }
 }

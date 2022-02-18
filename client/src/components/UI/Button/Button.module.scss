@@ -1,0 +1,51 @@
+@import "./src/scss/vars";
+
+.button {
+  cursor: pointer;
+  padding: 8.5px 20px;
+  @include transition();
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.default {
+  color: $white;
+}
+
+.primary {
+  color: $white;
+  background: $blue-6;
+  @include border()
+}
+
+.wide {
+  width: 100%
+}
+
+.link {
+
+}
+
+.disabled {
+  background: $gray-6;
+  border-color: $gray-6;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.loading {
+  pointer-events: none;
+  cursor: none;
+
+  svg {
+    animation: loading 1s infinite cubic-bezier(0.44, 0.06, 0.4, 0.81);
+  }
+}
+
+@keyframes loading {
+  to {
+    transform: rotate(360deg)
+  }
+}

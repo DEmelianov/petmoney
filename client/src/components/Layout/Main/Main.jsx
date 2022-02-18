@@ -1,10 +1,10 @@
 import React from 'react'
 import styles from './Main.module.scss'
 
-export default function Main(props) {
+export default function Main({children}) {
   return (
     <main className={styles.main}>
-      {props.children}
+      {children}
     </main>
   )
 }
